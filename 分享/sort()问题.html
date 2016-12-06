@@ -1,0 +1,66 @@
+<html>
+<head>
+	<title>sort()方法的问题</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<script type="text/javascript">
+
+		// var box = [4,7,2,5,3,3,9];
+		// alert(box.sort());
+		// alert(box);
+		//正常情况
+
+		// var box = [4,7,21,5,34,3,9];
+		// alert(box.sort());
+		// alert(box);
+		//问题所在
+
+		// var box = ['4','7','21','5','34','3','9'];
+		// alert(box.sort());
+		// alert(box);
+		//问题解释:sort()的针对数字和数字字符的系统算法是一样的,都是根据每一个数字或字符的第一位的ACII码来比较排序
+		function chongpai(value1,value2){
+			value1 = Number(value1);
+			value2 = Number(value2);
+			//把字符串转化为数字
+			//1️.js提供了parseInt()和parseFloat()两个转换函数。前者把值转换成整数，后者把值转换成浮点数
+			//2.强转类型转化
+			// Boolean(value)——把给定的值转换成Boolean型；
+			// Number(value)——把给定的值转换成数字（可以是整数或浮点数）；
+			// String(value)——把给定的值转换成字符串。
+			//3.利用JS的弱语言特性
+			
+			// var str= '012.345 ';
+			// var x = str-0;
+			// alert("x的类型  "+typeof x+"x的值  "+x);
+			
+			// if(value1 < value2){
+			// 	return -1;
+			// }else if(value1 > value2){
+			// 	return 1;
+			// }else{
+			// 	return 0;
+			// }
+				return value1 - value2;
+		}
+		function chongpaiA(value1,value2){
+			// if(value1 < value2){
+			// 	return -1;
+			// }else if(value1 > value2){
+			// 	return 1;
+			// }else{
+			// 	return 0;
+			// }
+			return value1 - value2;
+		}
+
+		var box = ['4','7','21','5','34','3','9'];
+		alert(box.sort(chongpai));
+		alert(box);
+		var box1 = [4,7,21,5,34,3,9];
+		alert(box1.sort(chongpaiA));
+		alert(box1);
+	</script>
+</body>
+</html>

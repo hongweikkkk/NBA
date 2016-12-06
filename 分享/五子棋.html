@@ -1,0 +1,270 @@
+<html>
+<head>
+	<title>五子棋</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		
+		table{
+			width: 300px;
+			height: 300px;
+			margin: 0 auto;
+			margin-top: 30px;
+			border: 1px solid black;
+			background-color: rgb(190,116,7);
+		}
+		td{
+			border: 1px solid black;
+			width:30px;
+			height:30px;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			var table = document.getElementById('one');
+			var tr = table.getElementsByTagName('tr');
+			var diJi = 1;//初始化步数
+
+			for(var i = 0;i < tr.length;i++){
+				var td = tr[i].getElementsByTagName('td');
+				for(var j = 0;j < td.length;j++){
+					td[j].zhengFan = true;
+					td[j].x = i;
+					td[j].y = j;
+				}
+			}//为各个单元格自定义属性并赋值
+
+			var qiPanZhi = new Array(10);
+			for(var i = 0;i < 10;i++){
+				qiPanZhi[i] = new Array();
+				for(var j = 0;j < 10;j++){
+					qiPanZhi[i][j] = 0;
+				}
+			}//创建一个对比棋盘的二维数组
+            // console.dir(qiPanZhi);
+			for(var i = 0;i < tr.length;i++){
+				var td = tr[i].getElementsByTagName('td');
+				for(var j = 0;j < td.length;j++){
+
+					td[j].onclick = function(){
+
+						if(!this.zhengFan){//通过自定义属性选择是否放下棋子
+							return;
+						}
+						var yuan = document.createElement('div');
+						yuan.style = "width:20px;height:20px;border-radius: 10px 10px;margin: 0 auto;";
+						if(diJi % 2 != 0){
+							yuan.style.background = "white";//通过步数的奇、偶性为棋子赋颜色
+							this.zhengFan = false;//改变自定义属性
+							qiPanZhi[this.x][this.y] = 1;
+							//下白旗时为相应位置的数组赋值为1
+							this.appendChild(yuan);//在单元格添加上棋子
+							win_1(this);
+							win_2(this);
+							win_3(this);
+							win_4(this);
+						}else{
+							yuan.style.background = "black";
+							this.zhengFan = false;
+							qiPanZhi[this.x][this.y]= 2;
+							//下黑旗时为相应位置的数组赋值为2
+							//alert(this.x+" "+this.y+" "+qiPanZhi[[this.x][this.y]]);
+							this.appendChild(yuan);
+							win_1(this);
+							win_2(this);
+							win_3(this);
+							win_4(this);
+						}
+						diJi++;
+						
+					}
+				}
+			}//在单元格内放下棋子
+			function win_1(dian){
+				var b = 0;//累计白旗的个数
+				var h = 0;//累计黑棋的个数
+				var x = dian.x;
+				for(var i = 0;i < 10;i++){
+					if(qiPanZhi[x][i] == 0){
+						b = 0;
+						h = 0;
+						//alert("123"+" "+b+" "+h);
+					}else if(qiPanZhi[x][i] == 1){
+						b++;
+						h = 0;
+						if(b == 5) break;
+						//alert("456"+" "+b+" "+h);
+					}else if(qiPanZhi[x][i] == 2){
+						h++;
+						b = 0;
+						if(h == 5) break;
+						//alert("789"+" "+b+" "+h);
+					}
+				}
+				if(b == 5){
+					alert("白旗胜");
+				}
+				if(h == 5){
+					alert("黑旗胜");
+				}
+				//横着查找,y从0开始
+			}
+			function win_2(dian){
+				var b = 0;//累计白旗的个数
+				var h = 0;//累计黑棋的个数
+				var y = dian.y;
+				for(var i = 0;i < 10;i++){
+					if(qiPanZhi[i][y] == 0){
+						b = 0;
+						h = 0;
+						//alert("123"+" "+b+" "+h);
+					}else if(qiPanZhi[i][y] == 1){
+						b++;
+						h = 0;
+						if(b == 5) break;
+						//alert("456"+" "+b+" "+h);
+					}else if(qiPanZhi[i][y] == 2){
+						h++;
+						b = 0;
+						if(h == 5) break;
+						//alert("789"+" "+b+" "+h);
+					}
+				}
+				if(b == 5){
+					alert("白旗胜");
+				}
+				if(h == 5){
+					alert("黑旗胜");
+				}
+				//竖着着查找,x从0开始
+			}
+			function win_3(dian){
+				//此为\方向查找,在\下方x轴值一定大于y轴值,x-y可得到左上方的起始x值
+				//在\上方y轴值一定大于x轴值,y-x可得到左上方的起始y值
+				var b = 0;//累计白旗的个数
+				var h = 0;//累计黑棋的个数
+				var x = dian.x;
+				var y = dian.y;
+				if(x >= y){
+					var i = x - y;
+					y = 0;
+					for(;i < 10 ;i++,y++){
+						if(qiPanZhi[i][y] == 0){
+							b = 0;
+							h = 0;
+						//alert("123"+" "+b+" "+h);
+						}else if(qiPanZhi[i][y] == 1){
+							b++;
+							h = 0;
+						if(b == 5) break;
+						//alert("456"+" "+b+" "+h);
+						}else if(qiPanZhi[i][y] == 2){
+							h++;
+							b = 0;
+							if(h == 5) break;
+						//alert("789"+" "+b+" "+h);
+						}
+					}
+				}
+				if(x < y){
+					var i = y - x;
+					x = 0 ;
+						for(;i < 10;i++,x++){
+						if(qiPanZhi[x][i] == 0){
+							b = 0;
+							h = 0;
+						//alert("123"+" "+b+" "+h);
+						}else if(qiPanZhi[x][i] == 1){
+							b++;
+							h = 0;
+						if(b == 5) break;
+						//alert("456"+" "+b+" "+h);
+						}else if(qiPanZhi[x][i] == 2){
+							h++;
+							b = 0;
+							if(h == 5) break;
+						//alert("789"+" "+b+" "+h);
+						}
+					}
+				}
+				if(b == 5){
+					alert("白旗胜");
+				}
+				if(h == 5){
+					alert("黑旗胜");
+				}
+			}
+			function win_4(dian){
+				//此为/情况,在/的上方x+y一定小于9,x+y可得到左下方x的起始值
+				//在/的下方x+y一定大于9,x+y-9可得到左下方y的起始值
+				var b = 0;//累计白旗的个数
+				var h = 0;//累计黑棋的个数
+				var x = dian.x;
+				var y = dian.y;
+				if(x + y <= 9){
+					x = x + y;
+					// alert("Y   "+y+"X   "+x+"I  "+i);
+					y = 0;
+					for(;x >= 0;x--,y++){
+						if(qiPanZhi[x][y] == 0){
+							b = 0;
+							h = 0;
+						// alert("123"+" "+b+" "+h+" "+x+" "+y);
+						}else if(qiPanZhi[x][y] == 1){
+							b++;
+							h = 0;
+						if(b == 5) break;
+						// alert("456"+" "+b+" "+h+" "+x+" "+y);
+						}else if(qiPanZhi[x][y] == 2){
+							h++;
+							b = 0;
+							if(h == 5) break;
+						// alert("789"+" "+b+" "+h+" "+x+" "+y);
+						}
+					}
+				}else if(x + y > 9){
+						y = x + y - 9;
+						x = 9;
+						for(;y < 10;x--,y++){
+						if(qiPanZhi[x][y] == 0){
+							b = 0;
+							h = 0;
+						// alert("aaa"+" "+b+" "+h+" "+x+" "+y);
+						}else if(qiPanZhi[x][y] == 1){
+							b++;
+							h = 0;
+						if(b == 5) break;
+						// alert("bbb"+" "+b+" "+h+" "+x+" "+y);
+						}else if(qiPanZhi[x][y] == 2){
+							h++;
+							b = 0;
+							if(h == 5) break;
+						// alert("ccc"+" "+b+" "+h+" "+x+" "+y);
+						}
+					}
+				}
+				if(b == 5){
+					alert("白旗胜");
+				}
+				if(h == 5){
+					alert("黑旗胜");
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+		<table cellspacing='0' cellpadding='0' id="one">
+			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+		</table>
+		
+</body>
+</html>

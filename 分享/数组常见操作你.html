@@ -1,0 +1,44 @@
+<html>
+<head>
+	<title>数组常见操作</title>
+	<meta charset="utf-8">
+	<script type="text/javascript">
+		window.onload = function(){
+			var arr = [1,2,3,4,5];
+
+			//转化为12:34:5
+
+			var i = 0;
+			var a = Array();
+			var c = Array();
+			while(i < arr.length){
+				a.push(arr.slice(i,i+1));
+				//截取从arr中下标为i到下标为i+1的元素添加到数组a中
+				//对比splice(),原数组被截取的元素被删除
+				alert("a: "+a);
+				alert("arr: "+arr);
+				//元素组arr中的元素不改变
+				a.push(arr.slice(++i,i+1));
+				alert(a);
+				c.push(a.join(""));
+				//把数组a(1,2)转化为字符串,中间无东西
+				alert("转化为字符串后a会不会改变 "+a);
+				alert(c);
+				//alert(c);
+				a = [];
+				//a相当于中转站
+				alert("清空后的"+a);
+				i++;
+			}
+			//alert(c);
+			var d = c.join(":");
+			alert("最终结果"+d);
+			// alert(c);
+
+		}
+	</script>
+</head>
+<body>
+
+</body>
+</html>
